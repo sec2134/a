@@ -1,7 +1,3 @@
----
-Harika, mentorumun isteği üzerine, komponent listesi ve IC odaklı ilerleme planımı destekleyecek bir **kontrol listesi** oluşturuyorum. Bu liste, projenin bu aşamasında hiçbir detayı atlamamak adına bana rehberlik edecek.
-
----
 
 ### **Gigabit Ethernet Switch Donanım Tasarımı: Komponent Seçimi ve IC Odaklı Kontrol Listesi**
 
@@ -124,4 +120,17 @@ Bu kontrol listesi, ana IC'ler (Switching ASIC, Yönetim CPU'su, Ethernet PHY'le
 
 ---
 
-Bu kontrol listesi, bir sonraki aşamada veri sayfalarını incelemeye başladığımda her bir bileşenin gerektirdiği alt komponentleri daha sistemli bir şekilde belirlememe yardımcı olacak. Her bir ana IC'nin veri sayfasında bu listeyi referans alarak ilerleyeceğim.
+### **Ana Komponent Seçim Öncelik Listesi (Kısa ve Net)**
+
+1.  **Ethernet Switching ASIC:** Bu, switch'in beyni. Tüm portları yönetecek, VLAN ve QoS gibi özelliklerin donanımsal desteğini sağlayacak olan ana yonga.
+    * **Neden Önce Bu?** PHY'leri kaç tane ve nasıl bağlayacağımız, Yönetim CPU'sunun nasıl bir arayüze ihtiyaç duyacağı, hatta PoE kontrolcüsü ile etkileşimi bile büyük ölçüde bu yongaya bağlı.
+
+2.  **Ethernet PHY Çipleri (Örn: DP83867IR):** Switching ASIC'in, eğer entegre değilse, fiziksel bağlantıları kurmak için kullanacağı çipler.
+    * **Neden İkinci?** İlk IC'miz seçildikten sonra, onun hangi tip (RGMII, SGMII vb.) ve kaç adet PHY arayüzü sunduğuna bakarak bu çipleri seçeceğiz.
+
+3.  **Yönetim CPU'su (MCU/CPU):** Switch'i yapılandırmak, web arayüzünü çalıştırmak ve PoE kontrolcüsü ile iletişim kurmak için kullanılacak işlemci.
+    * **Neden Üçüncü?** ASIC'in CPU arayüzüne ve yönetim trafiği gereksinimlerine göre bu işlemciyi seçeceğiz.
+
+4.  **PoE Kontrolcü Alt Sistemi:** 8 adet PoE+ portunu yönetecek kontrolcü IC'ler ve güç devresi bileşenleri.
+    * **Neden Dördüncü?** Genel güç bütçesi ve CPU ile nasıl etkileşeceği daha önce belirlenen ana IC'lere bağlı olacak.
+
